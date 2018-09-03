@@ -22,9 +22,13 @@ nbproject/
 
 # Dev Dependencies
 /vendor/twbs
+<<<<<<< HEAD
 
 # examples and tests in the vendor folder
 /vendor/**/tests
 /vendor/**/unitTests
 /vendor/**/Examples
 /vendor/**/examples
+
+# Docker compose data
+/var
