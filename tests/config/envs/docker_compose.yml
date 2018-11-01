@@ -1,0 +1,19 @@
+# `docker_compose` environment config goes here
+modules:
+    enabled:
+        - PhpBrowser:
+            url: "http://127.0.0.1:8888"
+    config:
+        PhpBrowser:
+            curl:
+                # timeout 5 minutes should be enough
+                # for installation script to finish.
+                CURLOPT_TIMEOUT: 300
+        Db:
+            dsn: "mysql:host=127.0.0.1;port=3306;dbname=gibbonedu"
+            user: gibbonedu
+            password: gibbonexample
+            dump: config/data/dump.sql
+            populate: true
+            cleanup: false
+            reconnect: true

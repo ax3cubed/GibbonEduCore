@@ -9,6 +9,9 @@
             "email": "ross@rossparker.org"
         }
     ],
+    "config": {
+        "process-timeout": 0
+    },
     "scripts": {
         "test": [
             "@test:codeception",

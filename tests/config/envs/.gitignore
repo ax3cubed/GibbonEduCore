@@ -1,3 +1,4 @@
 *.yml
 !travis_ci.yml
 !gitlab_ci.yml
+!docker_compose.yml
