@@ -8,18 +8,12 @@ before_script:
   - cp -pdf /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
   - php --ini
   # install composer
-  - mkdir $HOME/bin
   - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
   - php -r "if (hash_file('SHA384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-  - php composer-setup.php --install-dir=$HOME/bin --filename=composer
+  - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
   - php -r "unlink('composer-setup.php');"
-  - export PATH=$HOME/bin:$HOME/.phpunit/vendor/bin:$HOME/.composer/vendor/bin:$PATH
   # run test server for codeception tests
   - php -S 127.0.0.1:8888 -t $CI_PROJECT_DIR >/dev/null 2>&1 &
-  # install codeception globally in test environment
-  - COMPOSER_HOME=$HOME/.composer composer global require "codeception/codeception:2.1.*@dev" --no-progress
-  # install phpunit globally in test environment, but in different composer home
-  - COMPOSER_HOME=$HOME/.phpunit composer global require "phpunit/phpunit" "$PHPUNIT_VERSION" --no-progress
   # install dependencies for test
   - composer install --prefer-dist --no-interaction --no-progress
   # setup system locale for test
@@ -54,8 +48,6 @@ variables:
 
 php:7.0:
   image: php:7.0
-  variables:
-    PHPUNIT_VERSION: ^6
   script:
     - composer test
   tags:
@@ -63,8 +55,6 @@ php:7.0:
 
 php:7.1:
   image: php:7.1
-  variables:
-    PHPUNIT_VERSION: ^6
   script:
     - composer test
   tags:
@@ -72,8 +62,6 @@ php:7.1:
 
 php:7.2:
   image: php:7.2
-  variables:
-    PHPUNIT_VERSION: ^6
   script:
     - composer test
   tags:
