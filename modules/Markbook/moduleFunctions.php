@@ -325,11 +325,11 @@ function renderStudentSubmission($student, $submission, $markbookColumn)
         }
 
         if ($submission['type'] == 'File') {
-            $output .= "<span title='".$submission['version'].". $status. ".__('Submitted at').' '.substr($submission['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($submission['timestamp'], 0, 10))."' $style><a target='_blank' href='".$_SESSION[$guid]['absoluteURL'].'/'.$submission['location']."'>$linkText</a></span>";
+            $output .= "<span title='".$submission['version'].". $status. ".__('Submitted at {time} on {date}', ['time' => substr($submission['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($submission['timestamp'], 0, 10))])."' $style><a target='_blank' href='".$_SESSION[$guid]['absoluteURL'].'/'.$submission['location']."'>$linkText</a></span>";
         } elseif ($submission['type'] == 'Link') {
-            $output .= "<span title='".$submission['version'].". $status. ".__('Submitted at').' '.substr($submission['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($submission['timestamp'], 0, 10))."' $style><a target='_blank' href='".$submission['location']."'>$linkText</a></span>";
+            $output .= "<span title='".$submission['version'].". $status. ".__('Submitted at {time} on {date}', ['time' => substr($submission['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($submission['timestamp'], 0, 10))])."' $style><a target='_blank' href='".$submission['location']."'>$linkText</a></span>";
         } else {
-            $output .= "<span title='$status. ".__('Recorded at').' '.substr($submission['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($submission['timestamp'], 0, 10))."' $style>$linkText</span>";
+            $output .= "<span title='$status. ".__('Recorded at {time} on {date}', ['time' => substr($submission['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($submission['timestamp'], 0, 10))])."' $style>$linkText</span>";
         }
     } else {
         if (date('Y-m-d H:i:s') < $markbookColumn['homeworkDueDateTime']) {

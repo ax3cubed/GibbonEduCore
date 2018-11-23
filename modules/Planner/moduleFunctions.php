@@ -293,7 +293,10 @@ function getThread($guid, $connection2, $gibbonPlannerEntryID, $parent, $level, 
             $output .= "<table class='noIntBorder chatBox $classExtra' cellspacing='0' style='width: ".$width.'px; margin-left: '.($level * 15)."px'>";
             $output .= '<tr>';
             $output .= '<td><i>'.formatName($rowDiscuss['title'], $rowDiscuss['preferredName'], $rowDiscuss['surname'], $rowDiscuss['category']).' '.__('said').'</i>:</td>';
-            $output .= "<td style='text-align: right'><i>".__('Posted at').' <b>'.substr($rowDiscuss['timestamp'], 11, 5).'</b> on <b>'.dateConvertBack($guid, substr($rowDiscuss['timestamp'], 0, 10)).'</b></i></td>';
+            $output .= "<td style='text-align: right'><i>".__('Posted at {time} on {date}', [
+                'time' => '<b>'.substr($rowDiscuss['timestamp'], 11, 5).'</b>',
+                'date' => '<b>'.dateConvertBack($guid, substr($rowDiscuss['timestamp'], 0, 10)).'</b>'
+            ]).'</i></td>';
             $output .= '</tr>';
             $output .= '<tr>';
             $output .= "<td style='max-width: ".(700 - ($level * 15))."px;' colspan=2><b>".$rowDiscuss['comment'].'</b></td>';
@@ -596,7 +599,7 @@ function sidebarExtra($guid, $connection2, $todayStamp, $gibbonPersonID, $dateSt
                         }
                         $output .= "<li $style>";
                         $output .= "<a href='".$_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/'.$_SESSION[$guid]['module']."/planner_view_full.php&search=$gibbonPersonID&gibbonPlannerEntryID=".$row['gibbonPlannerEntryID'].'&viewBy=date&date='.$row['date']."&width=1000&height=550'>".$row['course'].'.'.$row['class'].'</a><br/>';
-                        $output .= "<span style='font-style: italic'>Due at ".substr($row['homeworkDueDateTime'], 11, 5).' on '.dateConvertBack($guid, substr($row['homeworkDueDateTime'], 0, 10));
+                        $output .= "<span style='font-style: italic'>".__('Due at {time} on {date}', ['time' => substr($row['homeworkDueDateTime'], 11, 5), 'date' => dateConvertBack($guid, substr($row['homeworkDueDateTime'], 0, 10))]);
                         $output .= '</li>';
                     }
                     ++$count;

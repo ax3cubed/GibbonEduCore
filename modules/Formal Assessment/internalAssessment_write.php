@@ -317,7 +317,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Formal Assessment/internal
                             echo "<span title='".htmlPrep($row['description'])."'>".$row['name'].'</span><br/>';
                             echo "<span style='font-size: 90%; font-style: italic; font-weight: normal'>";
                             if ($row['completeDate'] != '') {
-                                echo __('Marked on').' '.dateConvertBack($guid, $row['completeDate']).'<br/>';
+                                echo __('Marked on {date}', ['date' => dateConvertBack($guid, $row['completeDate'])]).'<br/>';
                             } else {
                                 echo __('Unmarked').'<br/>';
                             }
@@ -474,7 +474,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Formal Assessment/internal
                                     }
                                     if ($resultEntry->rowCount() >= 1) {
                                         $rowEntry = $resultEntry->fetch();
-                                        echo "<a title='".__($rowEntry['descriptor']).' | '.__('Test taken on').' '.dateConvertBack($guid, $rowEntry['date'])."' href='index.php?q=/modules/Students/student_view_details.php&gibbonPersonID=".$rowStudents['gibbonPersonID']."&subpage=External Assessment'>".__($rowEntry['value']).'</a>';
+                                        echo "<a title='".__($rowEntry['descriptor']).' | '.__('Test taken on {date}', ['date' => dateConvertBack($guid, $rowEntry['date'])])."' href='index.php?q=/modules/Students/student_view_details.php&gibbonPersonID=".$rowStudents['gibbonPersonID']."&subpage=External Assessment'>".__($rowEntry['value']).'</a>';
                                     }
                                     echo '</td>';
                                 }
@@ -624,11 +624,11 @@ if (isActionAccessible($guid, $connection2, '/modules/Formal Assessment/internal
                                                 }
 
                                                 if ($rowWork['type'] == 'File') {
-                                                    echo "<span title='".$rowWork['version'].". $status. ".__('Submitted at').' '.substr($rowWork['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))."' $style><a href='".$_SESSION[$guid]['absoluteURL'].'/'.$rowWork['location']."'>$linkText</a></span>";
+                                                    echo "<span title='".$rowWork['version'].". $status. ".__('Submitted at {time} on {date}', ['time' => substr($rowWork['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))])."' $style><a href='".$_SESSION[$guid]['absoluteURL'].'/'.$rowWork['location']."'>$linkText</a></span>";
                                                 } elseif ($rowWork['type'] == 'Link') {
-                                                    echo "<span title='".$rowWork['version'].". $status. ".__('Submitted at').' '.substr($rowWork['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))."' $style><a target='_blank' href='".$rowWork['location']."'>$linkText</a></span>";
+                                                    echo "<span title='".$rowWork['version'].". $status. ".__('Submitted at {time} on {date}', ['time' => substr($rowWork['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))])."' $style><a target='_blank' href='".$rowWork['location']."'>$linkText</a></span>";
                                                 } else {
-                                                    echo "<span title='$status. ".__('Recorded at').' '.substr($rowWork['timestamp'], 11, 5).' '.__('on').' '.dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))."' $style>$linkText</span>";
+                                                    echo "<span title='$status. ".__('Recorded at {time} on {date}', ['time' => substr($rowWork['timestamp'], 11, 5), 'date' => dateConvertBack($guid, substr($rowWork['timestamp'], 0, 10))])."' $style>$linkText</span>";
                                                 }
                                             } else {
                                                 if (date('Y-m-d H:i:s') < $homeworkDueDateTime[$i]) {
