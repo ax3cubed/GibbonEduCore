@@ -19,6 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 use Gibbon\Forms\Form;
 use Gibbon\Domain\DataUpdater\DataUpdaterGateway;
+use Gibbon\Services\Format;
 
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
@@ -108,7 +109,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Data Updater/data_updates.
             echo '<tr>';
 
             echo '<td>';
-            echo getUserPhoto($guid, $person['image_240'], 75);
+            echo Format::userPhoto($person['image_240'], 75);
             echo '</td>';
 
             echo '<td>';

@@ -133,7 +133,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Staff/staff_view_details.p
                     echo '</table>';
 
                     //Set sidebar
-                    $_SESSION[$guid]['sidebarExtra'] = getUserPhoto($guid, $row['image_240'], 240);
+                    $_SESSION[$guid]['sidebarExtra'] = Format::userPhoto($row['image_240'], 240);
                 }
             } else {
                 try {
@@ -669,7 +669,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Staff/staff_view_details.p
                     $_SESSION[$guid]['sidebarExtra'] = '';
 
                     //Show pic
-                    $_SESSION[$guid]['sidebarExtra'] .= getUserPhoto($guid, $row['image_240'], 240);
+                    $_SESSION[$guid]['sidebarExtra'] .= Format::userPhoto($row['image_240'], 240);
 
                     //PERSONAL DATA MENU ITEMS
                     $_SESSION[$guid]['sidebarExtra'] .= '<h4>Personal</h4>';

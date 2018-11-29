@@ -17,8 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-use Gibbon\Forms\Form;
 use Gibbon\Forms\DatabaseFormFactory;
+use Gibbon\Forms\Form;
+use Gibbon\Services\Format;
 
 if (isActionAccessible($guid, $connection2, '/modules/Roll Groups/rollGroups_details.php') == false) {
     //Acess denied
@@ -157,7 +158,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Roll Groups/rollGroups_det
             echo getRollGroupTable($guid, $gibbonRollGroupID, 5, $connection2, true, $sortBy, true);
 
             //Set sidebar
-            $_SESSION[$guid]['sidebarExtra'] = getUserPhoto($guid, $primaryTutor240, 240);
+            $_SESSION[$guid]['sidebarExtra'] = Format::userPhoto($primaryTutor240, 240);
         }
     }
 }

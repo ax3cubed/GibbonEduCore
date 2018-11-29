@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+use Gibbon\Services\Format;
+
 //Helps builds report array for setting gibbonMessengerReceipt
 function reportAdd($report, $emailReceipt, $gibbonPersonID, $targetType, $targetID, $contactType, $contactDetail)
 {
@@ -569,7 +571,7 @@ function getMessages($guid, $connection2, $mode = '', $date = '')
                 $return .= "<tr class=$rowNum>";
                 $return .= "<td style='text-align: center; vertical-align: top; padding-bottom: 10px; padding-top: 10px; border-top: 1px solid #666; width: 100px'>";
                 $return .= "<a name='".$output[$i]['gibbonMessengerID']."'></a>";
-                $return .= getUserPhoto($guid, $output[$i]['photo'], 75).'<br/>';
+                $return .= Format::userPhoto($output[$i]['photo'], 75).'<br/>';
 
 				//DEAL WITH LIKES
                 if ($output[$i]['gibbonPersonID'] == $_SESSION[$guid]['gibbonPersonID']) {

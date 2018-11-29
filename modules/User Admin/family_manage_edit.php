@@ -17,8 +17,9 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-use Gibbon\Forms\Form;
 use Gibbon\Forms\DatabaseFormFactory;
+use Gibbon\Forms\Form;
+use Gibbon\Services\Format;
 
 if (isActionAccessible($guid, $connection2, '/modules/User Admin/family_manage_edit.php') == false) {
     //Acess denied
@@ -277,7 +278,7 @@ if (isActionAccessible($guid, $connection2, '/modules/User Admin/family_manage_e
                     //COLOR ROW BY STATUS!
                     echo "<tr class=$rowNum>";
                     echo '<td>';
-                    echo getUserPhoto($guid, $child['image_240'], 75);
+                    echo Format::userPhoto($child['image_240'], 75);
                     echo '</td>';
                     echo '<td>';
                     echo "<a href='".$_SESSION[$guid]['absoluteURL'].'/index.php?q=/modules/User Admin/user_manage_edit.php&gibbonPersonID='.$child['gibbonPersonID']."'>".formatName('', $child['preferredName'], $child['surname'], 'Student').'</a>';

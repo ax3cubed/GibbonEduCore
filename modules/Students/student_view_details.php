@@ -276,7 +276,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                         }
                     }
                     //Set sidebar
-                    $_SESSION[$guid]['sidebarExtra'] = getUserPhoto($guid, $row['image_240'], 240);
+                    $_SESSION[$guid]['sidebarExtra'] = Format::userPhoto($row['image_240'], 240);
                 }
                 return;
             } else {
@@ -1361,7 +1361,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                     echo "<table class='smallIntBorder' cellspacing='0' style='width: 100%'>";
                                     echo '<tr>';
                                     echo "<td $class style='width: 33%; vertical-align: top' rowspan=2>";
-                                    echo getUserPhoto($guid, $rowMember['image_240'], 75);
+                                    echo Format::userPhoto($rowMember['image_240'], 75);
                                     echo '</td>';
                                     echo "<td $class style='width: 33%; vertical-align: top'>";
                                     echo "<span style='font-size: 115%; font-weight: bold'>".__('Name').'</span><br/>';
@@ -1518,7 +1518,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                                         }
                                         echo "<td style='width:30%; text-align: left; vertical-align: top'>";
                                         //User photo
-                                        echo getUserPhoto($guid, $rowMember['image_240'], 75);
+                                        echo Format::userPhoto($rowMember['image_240'], 75);
                                         echo "<div style='padding-top: 5px'><b>";
                                         $allStudents = '';
                                         if ($rowMember['gibbonStudentEnrolmentID'] == null)
@@ -3122,7 +3122,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Students/student_view_deta
                     }
                     $_SESSION[$guid]['sidebarExtra'] .= '</div>';
 
-                    $_SESSION[$guid]['sidebarExtra'] .= getUserPhoto($guid, $studentImage, 240);
+                    $_SESSION[$guid]['sidebarExtra'] .= Format::userPhoto($studentImage, 240);
 
                     //PERSONAL DATA MENU ITEMS
                     $_SESSION[$guid]['sidebarExtra'] .= '<h4>'.__('Personal').'</h4>';

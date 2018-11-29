@@ -17,6 +17,8 @@ You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
+use Gibbon\Services\Format;
+
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
 require_once __DIR__ . '/../Attendance/moduleFunctions.php';
@@ -1605,7 +1607,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/planner_view_full.
 
 							//Get photos
 							$_SESSION[$guid]['sidebarExtra'] .= '<div>';
-                            $_SESSION[$guid]['sidebarExtra'] .= getUserPhoto($guid, $rowClassGroup['image_240'], 75);
+                            $_SESSION[$guid]['sidebarExtra'] .= Format::userPhoto($rowClassGroup['image_240'], 75);
 
                             if ($row['role'] == 'Teacher' and $teacher == true) {
                                 if ($rowClassGroup['role'] == 'Student') {
@@ -1742,7 +1744,7 @@ if (isActionAccessible($guid, $connection2, '/modules/Planner/planner_view_full.
 
                                 $_SESSION[$guid]['sidebarExtra'] .= "<td style='border: 1px solid #ffffff; width:20%; text-align: center; vertical-align: top'>";
 
-                                $_SESSION[$guid]['sidebarExtra'] .= getUserPhoto($guid, $rowClassGroup['image_240'], 75);
+                                $_SESSION[$guid]['sidebarExtra'] .= Format::userPhoto($rowClassGroup['image_240'], 75);
 
                                 $_SESSION[$guid]['sidebarExtra'] .= "<div style='padding-top: 5px'><b>".formatName($rowClassGroup['title'], $rowClassGroup['preferredName'], $rowClassGroup['surname'], 'Staff').'</b><br/>';
 

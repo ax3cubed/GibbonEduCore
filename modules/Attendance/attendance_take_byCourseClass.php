@@ -20,6 +20,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 use Gibbon\Forms\DatabaseFormFactory;
 use Gibbon\Forms\Form;
 use Gibbon\Module\Attendance\AttendanceView;
+use Gibbon\Services\Format;
 
 //Module includes
 require_once __DIR__ . '/moduleFunctions.php';
@@ -267,7 +268,7 @@ if (isActionAccessible($guid, $connection2, "/modules/Attendance/attendance_take
                             $form->addHiddenValue($count . '-gibbonPersonID', $student['gibbonPersonID']);
 
                             $cell = $grid->addCell()->addClass('textCenter stacked')->addClass($student['cellHighlight']);
-                            $cell->addContent(getUserPhoto($guid, $student['image_240'], 75));
+                            $cell->addContent(Format::userPhoto($student['image_240'], 75));
                             $cell->addWebLink(formatName('', htmlPrep($student['preferredName']), htmlPrep($student['surname']), 'Student', false))
                                 ->setURL('index.php?q=/modules/Students/student_view_details.php')
                                 ->addParam('gibbonPersonID', $student['gibbonPersonID'])
