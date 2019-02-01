@@ -28,17 +28,16 @@ stages:
   before_script:
     # install apt packages
     - apt-get update -qy
-    - apt-get install -qy git zip unzip zlib1g-dev gettext locales
+    - apt-get install -qy git zip unzip zlib1g-dev gettext libpng-dev locales
     # install php extensions
-    - docker-php-ext-install zip gettext pdo_mysql > /dev/null
+    - docker-php-ext-install zip gettext pdo_mysql gd > /dev/null
     # properly setup php
     - cp -pdf /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
     - php --ini
     # install composer
-    - mkdir $HOME/bin
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
     - php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    - php composer-setup.php --install-dir=$HOME/bin --filename=composer
+    - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
     - php -r "unlink('composer-setup.php');"
     - export PATH=$HOME/bin:$HOME/.phpunit/vendor/bin:$HOME/.composer/vendor/bin:$PATH
     # run test server for codeception tests
@@ -62,6 +61,34 @@ stages:
   tags:
     - git-annex
 
+.bundle:
+  image: php:7.0
+  stage: bundle
+  before_script:
+    # install apt packages
+    - apt-get update -qy
+    - apt-get install -qy git zip unzip zlib1g-dev gettext libpng-dev locales
+    # install php extensions
+    - docker-php-ext-install zip gettext pdo_mysql gd > /dev/null
+    # properly setup php
+    - cp -pdf /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+    - php --ini
+    # install composer
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    - php -r "unlink('composer-setup.php');"
+    # create bundle folder
+    - mkdir -p gibbonedu
+  script:
+    # grab dependencies with composer
+    - composer install --no-dev
+    # put all the wanted files and folders into artifact folder
+    - 'find . -mindepth 1 -maxdepth 1 -name "gibbonedu" -prune -o -exec mv "{}" ./gibbonedu/. \;'
+  artifacts:
+    paths:
+      - gibbonedu
+
 php:7.0:
   stage: test
   image: php:7.0
@@ -77,31 +104,17 @@ php:7.2:
   image: php:7.2
   extends: .tests
 
-bundle:
-  image: php:7.0
-  stage: bundle
-  before_script:
-    # install apt packages
-    - apt-get update -qy
-    - apt-get install -qy git zip unzip zlib1g-dev
-    # install php extensions
-    - docker-php-ext-install zip gettext > /dev/null
-    # properly setup php
-    - cp -pdf /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
-    - php --ini
-    # install composer
-    - mkdir $HOME/bin
-    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    - php composer-setup.php --install-dir=$HOME/bin --filename=composer
-    - php -r "unlink('composer-setup.php');"
-    # create bundle folder
-    - mkdir -p gibbonedu
-  script:
-    # grab dependencies with composer
-    - composer install --no-dev
-    # put all the wanted files and folders into artifact folder
-    - 'find . -mindepth 1 -maxdepth 1 -name "gibbonedu" -prune -o -exec mv "{}" ./gibbonedu/. \;'
+bundle:master:
+  extends: .bundle
+  only:
+    - master
   artifacts:
+    expire_in: 1 week
     paths:
       - gibbonedu
+
+bundle:release:
+  extends: .bundle
+  only:
+    # build all semver references
+    - /^v\d+\.\d+\.\d+$/
