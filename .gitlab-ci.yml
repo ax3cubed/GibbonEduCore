@@ -1,3 +1,7 @@
+stages:
+  - test
+  - bundle
+
 # Common test scripts
 .tests:
   services:
@@ -33,7 +37,7 @@
     # install composer
     - mkdir $HOME/bin
     - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    - php -r "if (hash_file('SHA384', 'composer-setup.php') === '93b54496392c062774670ac18b134c3b3a95e5a5e5c8f1a9f115f203b75bf9a129d5daa8ba6a13e2cc8a1da0806388a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
     - php composer-setup.php --install-dir=$HOME/bin --filename=composer
     - php -r "unlink('composer-setup.php');"
     - export PATH=$HOME/bin:$HOME/.phpunit/vendor/bin:$HOME/.composer/vendor/bin:$PATH
@@ -59,13 +63,45 @@
     - git-annex
 
 php:7.0:
+  stage: test
   image: php:7.0
   extends: .tests
 
 php:7.1:
+  stage: test
   image: php:7.1
   extends: .tests
 
 php:7.2:
+  stage: test
   image: php:7.2
   extends: .tests
+
+bundle:
+  image: php:7.0
+  stage: bundle
+  before_script:
+    # install apt packages
+    - apt-get update -qy
+    - apt-get install -qy git zip unzip zlib1g-dev
+    # install php extensions
+    - docker-php-ext-install zip gettext > /dev/null
+    # properly setup php
+    - cp -pdf /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+    - php --ini
+    # install composer
+    - mkdir $HOME/bin
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php -r "if (hash_file('SHA384', 'composer-setup.php') === '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+    - php composer-setup.php --install-dir=$HOME/bin --filename=composer
+    - php -r "unlink('composer-setup.php');"
+    # create bundle folder
+    - mkdir -p gibbonedu
+  script:
+    # grab dependencies with composer
+    - composer install --no-dev
+    # put all the wanted files and folders into artifact folder
+    - 'find . -mindepth 1 -maxdepth 1 -name "gibbonedu" -prune -o -exec mv "{}" ./gibbonedu/. \;'
+  artifacts:
+    paths:
+      - gibbonedu

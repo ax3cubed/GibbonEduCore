@@ -34,3 +34,6 @@ nbproject/
 
 # var Folder
 /var/*
+
+# bundler folder
+/gibbonedu
